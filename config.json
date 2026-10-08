@@ -1,0 +1,23 @@
+{
+  "_说明": "第三方登录配置。在哪个平台注册了应用，就把对应的字段填上；没填的登录方式在前端会显示为「待配置」。填完后重新部署即可生效。",
+  "wechat": {
+    "_申请": "微信开放平台 open.weixin.qq.com → 网站应用（需企业资质 + 域名ICP备案，个人无法申请）",
+    "appId": "",
+    "appSecret": ""
+  },
+  "feishu": {
+    "_申请": "飞书开放平台 open.feishu.cn → 创建企业自建应用 → 安全设置里把 https://<你的域名>/api/auth/feishu/callback 加入重定向 URL",
+    "appId": "",
+    "appSecret": ""
+  },
+  "wecom": {
+    "_申请": "企业微信管理后台 work.weixin.qq.com → 应用管理 → 自建应用 → 设置可信域名",
+    "corpId": "",
+    "appSecret": "",
+    "agentId": ""
+  },
+  "sms": {
+    "_申请": "短信服务。默认 dev 开发模式：验证码直接显示在登录弹窗里（不真发短信）。接入阿里云/腾讯云短信后把 provider 改掉并在 server.js 的 TODO 处调用发送 API。",
+    "provider": "dev"
+  }
+}

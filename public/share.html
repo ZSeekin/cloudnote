@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云笺 · 分享</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%235264E8'/%3E%3Cpath d='M14 32a7 7 0 0 1-1.5-13.8A9 9 0 0 1 30 14h3l4.5 4.5V29a3 3 0 0 1-3 3z' fill='white'/%3E%3C/svg%3E">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f5f5f7; color: #1d1d1f; padding: 36px 16px 60px;
+  }
+  .page {
+    max-width: 860px; margin: 0 auto; background: #fff; border-radius: 10px;
+    padding: 48px 64px 56px; box-shadow: 0 1px 3px rgba(31,35,41,.08);
+    font-size: 15.5px; line-height: 1.8; overflow-wrap: break-word;
+  }
+  img, video { max-width: 100% !important; height: auto !important; box-sizing: border-box; }
+  h1 { font-size: 26px; font-weight: 700; margin: 24px 0 10px; line-height: 1.4; }
+  h2 { font-size: 22px; font-weight: 700; margin: 20px 0 8px; line-height: 1.4; }
+  h3 { font-size: 18px; font-weight: 600; margin: 16px 0 6px; line-height: 1.4; }
+  #content p, #content div { margin: 0 0 10px; }
+  ul, ol { padding-left: 1.5em; margin: 6px 0; }
+  li { margin: 3px 0; }
+  blockquote {
+    border-left: 3px solid #5264E8; background: #f6f7fe; color: #6e6e73;
+    padding: 6px 14px; border-radius: 0 6px 6px 0; margin: 10px 0;
+  }
+  pre {
+    background: #f5f6f8; border: 1px solid #ebedf0; border-radius: 6px; padding: 12px 14px;
+    font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 13.5px;
+    white-space: pre-wrap; word-break: break-all; margin: 10px 0;
+  }
+  a { color: #5264E8; }
+  hr { border: none; border-top: 1px solid #e8e8ed; margin: 20px 0; }
+  figure.media { margin: 20px auto; max-width: 100%; }
+  figure.media img, figure.media video {
+    display: block; margin: 0 auto; max-width: 100%; height: auto;
+    border-radius: 12px; box-shadow: 0 1px 6px rgba(31, 35, 41, .08);
+  }
+  figure.media video { background: #000; }
+  figcaption { text-align: center; font-size: 12.5px; color: #86868b; padding-top: 8px; letter-spacing: .3px; }
+  figcaption:empty { display: none; }
+  .hl { background: #fff1a8; border-bottom: 2px solid #f0b400; border-radius: 2px; cursor: pointer; }
+  .hl.flash { animation: hlflash 1.2s ease; }
+  @keyframes hlflash { 0%, 100% { background: #fff1a8; } 40% { background: #ffd640; } }
+  figure.media { position: relative; }
+  figure.media.commented img, figure.media.commented video { outline: 2px solid #f0b400; outline-offset: 3px; }
+  figure.media.commented::after {
+    content: "💬"; position: absolute; top: -10px; right: 10px; background: #f0b400; color: #fff;
+    font-size: 12px; width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(31,35,41,.25);
+  }
+
+  #docTitle { font-size: 30px; font-weight: 700; margin-bottom: 18px; line-height: 1.35; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #86868b;
+    background: #f5f5f7; border-radius: 6px; padding: 5px 10px; margin-bottom: 20px;
+  }
+  #commentsSec { margin-top: 36px; border-top: 1px solid #f5f5f7; padding-top: 20px; }
+  #commentsSec h2 { font-size: 16px; margin: 0 0 12px; }
+  .citem {
+    border: 1px solid #f0f1f3; border-radius: 9px; padding: 10px 14px; margin-bottom: 10px;
+    cursor: pointer; transition: border-color .15s;
+  }
+  .citem:hover { border-color: #c3c9f7; }
+  .chead { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+  .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .cauthor { font-size: 13px; font-weight: 600; }
+  .ctime { font-size: 11px; color: #aeaeb2; margin-left: auto; }
+  .cquote { font-size: 12px; color: #86868b; border-left: 2px solid #e8e8ed; padding-left: 8px; margin: 4px 0; }
+  .cbody { font-size: 13.5px; line-height: 1.6; margin-top: 4px; white-space: pre-wrap; word-break: break-word; }
+  .cempty { color: #aeaeb2; font-size: 13px; text-align: center; padding: 24px 0; }
+  .nomsg { text-align: center; color: #86868b; font-size: 15px; padding: 80px 0; line-height: 2; }
+  #loading { text-align: center; color: #aeaeb2; padding: 120px 0; font-size: 14px; }
+  @media (max-width: 700px) { .page { padding: 24px 18px; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:22px;color:#232A3B;font-weight:700;font-size:15.5px;">
+    <svg viewBox="0 0 48 48" fill="none" style="width:24px;height:24px;"><path d="M11 34 8.5 40.5A2.5 2.5 0 0 0 11 43.5h24a4 4 0 0 0 4-4V35Z" fill="#5264E8" opacity=".45"/><path d="M13 35a9.5 9.5 0 0 1-2-18.7A12 12 0 0 1 34 10h3.5L43 15.5V31a4 4 0 0 1-4 4Z" fill="#5264E8"/><path d="M37.5 10 43 15.5h-5.5Z" fill="#F7F6F2"/><rect x="17" y="22" width="14" height="2.6" rx="1.3" fill="#F7F6F2" opacity=".85"/><rect x="17" y="27.5" width="9" height="2.6" rx="1.3" fill="#F7F6F2" opacity=".6"/></svg>
+    云笺 <span style="font-size:11px;font-weight:500;color:#aeaeb2;">CloudNote · 把想法，写在一起。</span>
+  </div>
+  <div id="loading">正在加载文档…</div>
+  <div id="main" style="display:none">
+    <div id="docTitle"></div>
+    <div><span class="badge">👀 分享的文档 · 只读</span></div>
+    <div id="content"></div>
+    <div id="commentsSec">
+      <h2>💬 评论（<span id="cCount">0</span>）<span style="font-size:12px;color:#aeaeb2;font-weight:400"> · 点击评论可定位到原文</span></h2>
+      <div id="cList"></div>
+    </div>
+  </div>
+  <div id="msg" class="nomsg" style="display:none"></div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  var id = location.pathname.split('/').filter(Boolean).pop();
+
+  function fmtTime(ts) {
+    var d = new Date(ts), now = new Date();
+    var hh = ('0' + d.getHours()).slice(-2), mm = ('0' + d.getMinutes()).slice(-2);
+    if (d.toDateString() === now.toDateString()) return '今天 ' + hh + ':' + mm;
+    return (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + hh + ':' + mm;
+  }
+
+  fetch('/api/docs/' + id).then(function (r) {
+    if (r.status === 403) {
+      $('#loading').style.display = 'none';
+      $('#msg').style.display = 'block';
+      $('#msg').textContent = '🔗 这篇文档未开放分享\n请向文档主人索取新的分享链接';
+      return null;
+    }
+    if (!r.ok) throw new Error('not found');
+    return r.json();
+  }).then(function (d) {
+    if (!d) return;
+    if (d.share_mode === 'edit') { location.replace('/?doc=' + encodeURIComponent(id)); return; }
+    if (d.share_mode === 'off' && !d.is_owner) {
+      $('#loading').style.display = 'none';
+      $('#msg').style.display = 'block';
+      $('#msg').textContent = '🔗 这篇文档未开放分享\n请向文档主人索取新的分享链接';
+      return;
+    }
+    document.title = (d.title || '分享的文档') + ' · 云笺 CloudNote';
+    $('#loading').style.display = 'none';
+    $('#main').style.display = 'block';
+    $('#docTitle').textContent = d.title || '无标题文档';
+    $('#content').innerHTML = d.html;
+
+    return fetch('/api/docs/' + id + '/comments').then(function (r) { return r.json(); }).then(function (cs) {
+      cs = cs || [];
+      $('#cCount').textContent = cs.length;
+      if (!cs.length) {
+        $('#cList').innerHTML = '<div class="cempty">还没有评论</div>';
+        return;
+      }
+      var list = $('#cList');
+      cs.forEach(function (c) {
+        var it = document.createElement('div');
+        it.className = 'citem';
+        it.innerHTML =
+          '<div class="chead"><span class="cdot" style="background:' + (c.color || '#86868b') + '"></span>' +
+          '<span class="cauthor"></span><span class="ctime">' + fmtTime(c.created) + '</span></div>' +
+          '<div class="cquote"></div><div class="cbody"></div>';
+        it.querySelector('.cauthor').textContent = c.author;
+        it.querySelector('.cquote').textContent = c.quote;
+        it.querySelector('.cbody').textContent = c.body;
+        it.addEventListener('click', function () {
+          var span = document.querySelector('.hl[data-cid="' + c.cid + '"]');
+          var fig = document.querySelector('figure.media[data-cid="' + c.cid + '"]');
+          var el = span || fig;
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (span) { span.classList.remove('flash'); void span.offsetWidth; span.classList.add('flash'); }
+          }
+        });
+        list.appendChild(it);
+      });
+    });
+  }).catch(function () {
+    $('#loading').style.display = 'none';
+    $('#msg').style.display = 'block';
+    $('#msg').textContent = '⚠️ 文档不存在或已被删除';
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "cloudnote",
+  "version": "1.0.0",
+  "description": "云笺 CloudNote · 把想法，写在一起 —— 类飞书轻量在线协作文档编辑器（Node + Express + SQLite）",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^2.4.0",
+    "sql.js": "^1.14.2"
+  }
+}
